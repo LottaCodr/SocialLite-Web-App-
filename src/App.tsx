@@ -1,10 +1,21 @@
+import SigninForms from './_auth/forms/SigninForms';
+import { Home } from './_root/pages';
 import './globals.css';
+import {Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello Sociallite!
-    </h1>
+    <main className='flex h-screen'>
+        <Routes>
+            {/* public routes */}
+        
+        <Route path='/sign-in' element={<SigninForms/>}/>
+
+
+            {/* private Routes */}
+            <Route index element={<Home/>}/>
+        </Routes>
+    </main>
   )
 }
 
