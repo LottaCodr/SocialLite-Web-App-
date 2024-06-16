@@ -1,11 +1,6 @@
 import { getCurrentUser } from "@/lib/appwrite/api";
-import {  IContextType, IUser } from "@/types";
-import {
-  useEffect,
-  useState,
-  createContext,
-  useContext,
-} from "react";
+import { IContextType, IUser } from "@/types";
+import { useEffect, useState, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const INITIAL_USER = {
@@ -26,8 +21,7 @@ const INITIAL_STATE = {
   checkAuthUser: async () => false as boolean,
 };
 
-//const AuthContext = createContext<IContextType>(INITIAL_STATE);
-const AuthContext = createContext<IContextType>(INITIAL_STATE)
+const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser>(INITIAL_USER);
@@ -35,7 +29,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  
   const checkAuthUser = async () => {
     try {
       const currentAccount = await getCurrentUser();
@@ -53,7 +46,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
 
         return true;
-      } return false;
+      }
+      return false;
     } catch (error) {
       console.log(error);
       return false;
@@ -63,15 +57,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    //
     if (
-      localStorage.getItem("cookieFallback") === "[]"  ||
-      localStorage.getItem("cookieFallback") == null
-     
+      localStorage.getItem("cookieFallback") === "[]" ||
+      localStorage.getItem("cookieFallback") === null
     )
       navigate("/sign-in");
 
-      checkAuthUser();
+    checkAuthUser();
   }, []);
 
   const value = {
@@ -88,5 +80,3 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export default AuthProvider;
 
 export const useUserContext = () => useContext(AuthContext);
-
-

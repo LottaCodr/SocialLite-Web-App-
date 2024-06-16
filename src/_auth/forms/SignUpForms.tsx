@@ -36,21 +36,24 @@ function SignUpForms() {
 
   const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
-
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof SignUpValidation>>({
-    resolver: zodResolver(SignUpValidation),
-    defaultValues: {
+    
+    const  defaultValues = {
       name: "",
       username: "",
       email: "",
       password: "",
-    },
+    }
+
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof SignUpValidation>>({
+    resolver: zodResolver(SignUpValidation),
+   defaultValues,
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     const newUser = await createUserAccount(values);
+    console.log(newUser); 
     if (!newUser) {
       return toast({
         title: "Sign-up failed!",
@@ -69,9 +72,11 @@ function SignUpForms() {
     const isLoggedIn = await checkAuthUser();
 
     if (isLoggedIn) {
-      form.reset();
+      form.reset(defaultValues);
       navigate("/");
-    } else return toast({ title: "Sign up failed. Please try again" });
+    } else {
+      return toast({ title: "Sign up failed. Please try again" });
+    }
   }
 
   return (
@@ -147,7 +152,7 @@ function SignUpForms() {
             )}
           />
           <Button type="submit" className="shad-button_primary">
-            {isCreatingAccount ? (
+            {isCreatingAccount || isSigningIn || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
