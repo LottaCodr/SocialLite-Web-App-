@@ -1,6 +1,7 @@
 import PostForm from "@/components/forms/PostForm"
+import { INewPost } from "@/types"
 
-const CreatePost = () => {
+const CreatePost = (post: INewPost) => {
   return (
     <div className="flex flex-1">
       <div className="common-container">
