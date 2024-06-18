@@ -2,6 +2,7 @@ import {useQuery, useMutation, useQueryClient, useInfiniteQuery} from '@tanstack
 import { createUserAccount, signInAccount, signOutAccount } from '../appwrite/api';
 import { INewPost, INewUser } from '@/types';
 import { CreatePost } from '@/_root/pages';
+import { QUERY_KEYS } from './queryKeys';
 
 //for creating the user
 
@@ -33,8 +34,9 @@ export const useCreatePost = () => {
         mutationFn: (post: INewPost) => CreatePost(post),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.GET_RECENT_POST],
+                queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
             })
         },
     })
 }
+  

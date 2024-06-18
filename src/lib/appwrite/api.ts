@@ -110,7 +110,7 @@ export async function signOutAccount() {
 
 }
 
-
+//create post
 export async function createPost (post: INewPost) {
   try {
     //upload file to appwrite storage
@@ -132,7 +132,7 @@ export async function createPost (post: INewPost) {
     const newPost = await databases.createDocument(
       appwriteconfig.databaseId,
       appwriteconfig.postCollectionId,
-      ID.unique() {
+      ID.unique(), {
         creator: post.userId,
         caption: post.caption,
         imageUrl: fileUrl,
