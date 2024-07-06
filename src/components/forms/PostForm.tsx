@@ -57,7 +57,9 @@ const PostForm = ( {post}: PostFormProps ) => {
         title: "Pleasre try again"
       })
     }
+    console.log(values);
     navigate("/");
+    
   } 
   return (
     <Form {...form}>
