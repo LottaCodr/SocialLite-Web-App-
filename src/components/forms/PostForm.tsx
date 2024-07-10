@@ -54,7 +54,7 @@ const PostForm = ( {post}: PostFormProps ) => {
 
     if(!newPost) {
       toast ({
-        title: "Pleasre try again"
+        title: "Please try again"
       })
     }
     console.log(values);
