@@ -4,7 +4,6 @@ import { INewPost, INewUser } from '@/types';
 import { QUERY_KEYS } from './queryKeys';
 
 //for creating the user
-
 export const useCreateUserAccount = () => {
     return useMutation ({
         mutationFn: (user: INewUser) => 
@@ -26,7 +25,7 @@ export const useSignOutAccount = () => {
         
     });
 }
-
+     
 export const useCreatePost = () => {
     const queryClient = useQueryClient();
 

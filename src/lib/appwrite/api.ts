@@ -42,13 +42,12 @@ export async function saveUserToDB(user: {
   username?: string;
 }) {
   try {
-
-    console.log('Database ID:', appwriteconfig.databaseId);
-    console.log('userCollection ID:', appwriteconfig.userCollectionId);
+    console.log("Database ID:", appwriteconfig.databaseId);
+    console.log("userCollection ID:", appwriteconfig.userCollectionId);
     const newUser = await databases.createDocument(
       appwriteconfig.databaseId,
       appwriteconfig.userCollectionId,
-      
+
       ID.unique(),
       user
     );
@@ -102,25 +101,24 @@ export async function getCurrentUser() {
 
 export async function signOutAccount() {
   try {
-    const session = await account.deleteSession('current');
+    const session = await account.deleteSession("current");
     return session;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-
 }
 
-//create post
-export async function createPost (post: INewPost) {
+//==================== CREATE POST
+export async function createPost(post: INewPost) {
   try {
-    //upload file to appwrite storage
+    //upload image to appwrite storage
     const uploadedFile = await uploadFile(post.file[0]);
-    
-    if(!uploadedFile) throw Error;
+
+    if (!uploadedFile) throw Error;
 
     //Get file Url
     const fileUrl = getFilePreview(uploadedFile.$id);
-    if(!fileUrl) {
+    if (!fileUrl) {
       await deleteFile(uploadedFile.$id);
       throw Error;
     }
@@ -132,28 +130,27 @@ export async function createPost (post: INewPost) {
     const newPost = await databases.createDocument(
       appwriteconfig.databaseId,
       appwriteconfig.postCollectionId,
-      ID.unique(), {
+      ID.unique(),
+      {
         creator: post.userId,
         caption: post.caption,
         imageUrl: fileUrl,
         imageId: uploadedFile.$id,
         location: post.location,
-        tags: tags
+        tags: tags,
       }
     );
 
-    if(!newPost) {
-       deleteFile(uploadedFile.$id);
+    if (!newPost) {
+      await deleteFile(uploadedFile.$id);
       throw Error;
     }
 
     return newPost;
   } catch (error) {
     console.log(error);
-    
   }
 }
-
 
 export async function uploadFile(file: File) {
   try {
@@ -162,15 +159,12 @@ export async function uploadFile(file: File) {
       ID.unique(),
       file
     );
-    
+
     return uploadedFile;
-    
   } catch (error) {
     console.log(error);
   }
 }
-
-
 
 export async function getFilePreview(fileId: string) {
   try {
@@ -182,26 +176,23 @@ export async function getFilePreview(fileId: string) {
       "top",
       100
     );
-    
-    if(!fileUrl) throw Error;
 
+    if (!fileUrl) throw Error;
 
     return fileUrl;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-  
 }
 
 //DELETE FILE
 export async function deleteFile(fileId: string) {
-    try {
-      await storage.deleteFile(appwriteconfig.storageId, fileId);
-      return { status: "ok" };
-    } catch (error) {
-      console.log(error);
-      
-    }
+  try {
+    await storage.deleteFile(appwriteconfig.storageId, fileId);
+    return { status: "ok" };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 //GET POSTS
@@ -209,8 +200,8 @@ export async function getRecentPosts() {
   const posts = await databases.listDocuments(
     appwriteconfig.databaseId,
     appwriteconfig.postCollectionId,
-    [Query.orderDesc('$createdAt'), Query.limit(20)]
-  )
+    [Query.orderDesc("$createdAt"), Query.limit(20)]
+  );
 
   if (!posts) throw Error;
 
@@ -223,12 +214,11 @@ export async function searchPosts(searchTerm: string) {
       appwriteconfig.databaseId,
       appwriteconfig.postCollectionId,
       [Query.search("caption", searchTerm)]
-          );
+    );
 
-          if(!posts) throw Error;
-          return posts;       
-   } catch (error) { 
+    if (!posts) throw Error;
+    return posts;
+  } catch (error) {
     console.log(error);
-    
   }
 }

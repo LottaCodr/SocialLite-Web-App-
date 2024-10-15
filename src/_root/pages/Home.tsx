@@ -20,7 +20,9 @@ const { data: posts, isPending: isPostLoading, isError: isErrorPosts } = useGetR
           ): (
             <ul className="flex flex-col flex-1 gap-9 w-full">
               {posts?.documents.map((post: Models.Document) => (
-                <PostCard post={post }/>
+               <PostCard post={post }/>
+
+                
               ))}
 
             </ul>
